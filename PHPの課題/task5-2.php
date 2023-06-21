@@ -7,15 +7,25 @@
   </head>
   <body>
     <?php
+      // $week = array('日曜日','月曜日','火曜日','水曜日','木曜日','金曜日','土曜日');
+
+      //   echo '<ul>';
+      //     $i = 0;
+      //     while ($i < count($week)) {
+      //     echo '<li>' . $week[$i] . '</li>';
+      //     $i++;
+      //     }
+      //   echo '</ul>';
+
       $week = array('日曜日','月曜日','火曜日','水曜日','木曜日','金曜日','土曜日');
 
-        echo '<ul>';
-          $i = 0;
-          while ($i < count($week)) {
-          echo '<li>' . $week[$i] . '</li>';
-          $i++;
-          }
-        echo '</ul>';
+      echo '<ul>';
+        $i = 0;
+        while ($i < 7) {
+        echo '<li>' . $week[$i] . '</li>';
+        $i++;
+        }
+      echo '</ul>';
   ?>
   </body>
 </html>
