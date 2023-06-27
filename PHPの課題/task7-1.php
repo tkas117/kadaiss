@@ -9,6 +9,7 @@
     private $sex;
     private $id;
 
+    // ②idに書式化された文字列を生成するための関数であるsprintf関数を使用。
     public function __construct($name,$age,$sex){
       $this -> name = $name; 
       $this -> age = $age;
