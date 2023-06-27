@@ -16,6 +16,10 @@
       $this -> sex = $sex;
       $this -> id = sprintf('S%04d', self::$counter++);
     }
+
+    public function number(){
+      return $this->id;
+    }
   
     public function show(){
       printf('(%s) %s %s %s<br>',$this -> id,$this -> name,$this -> age,$this -> sex);
@@ -27,9 +31,13 @@
   $staffs[1] = new Staff ('山田　花子','25歳','女性');
   $staffs[2] = new Staff ('鈴木　次郎','27歳','男性');
 
-  $staffs[0]->show();
-  $staffs[1]->show();
-  $staffs[2]->show();
+  foreach ($staffs as $staff) {
+    $staff->show();
+  }
+
+  // $staffs[0]->show();
+  // $staffs[1]->show();
+  // $staffs[2]->show();
 ?>
 
 <!DOCTYPE html>
