@@ -33,9 +33,9 @@
       
       function max_number ($n1,$n2){
         if ($n1>$n2){
-          echo "\$n1と\$n2のうち最大値は". $n1 ."です";             
+          echo "\$aと\$bのうち最大値は". $n1 ."です";             
           }else {
-          echo "\$aと\$n2のうち最大値は". $n2 ."です"; 
+          echo "\$aと\$bのうち最大値は". $n2 ."です"; 
         }
       }
       max_number($a, $b)
