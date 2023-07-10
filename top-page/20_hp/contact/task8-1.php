@@ -163,7 +163,6 @@ if (count($errors) > 0) {
                 </td>
               </tr>
             </table>
-
               <?php if (count($errors) > 0): ?>
               <input type='button' onclick='history.back()' value='戻る' class="contact-submit">
               <?php else: ?>
