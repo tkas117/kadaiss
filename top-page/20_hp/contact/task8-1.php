@@ -1,3 +1,72 @@
+<?php
+//直リンクされた場合index.htmlにリダイレクト
+if($_SERVER["REQUEST_METHOD"] != "POST"){
+	header("Location: index.html");
+	exit();
+}
+
+//各項目を内容を取得
+$name = $_POST['お名前'];
+$kana = $_POST['フリガナ'];
+$email = $_POST['メールアドレス'];
+$phone = $_POST['電話番号'];
+$inquiry = $_POST['お問い合わせ項目'];
+$message = $_POST['お問い合わせ内容'];
+$agreement = isset($_POST['personal_information']) ? $_POST['personal_information'] : '';
+
+
+// 赤字でエラー表示するために、まず、連想配列を作成。
+$errors = array();
+
+// 必須項目のチェック
+if (empty($name)) {
+    $errors['name'] = "お名前は必須項目です。";
+}
+
+if (empty($kana)) {
+    $errors['kana'] = "フリガナは必須項目です。";
+}
+
+if (empty($email)) {
+    $errors['email'] = "メールアドレスは必須項目です。";
+  } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $errors['email'] = "正しい形式でメールアドレスを入力してください。";
+}
+
+if (empty($phone)) {
+    $errors['phone'] = "電話番号は必須項目です。";
+  } elseif (!preg_match('/^\d{10,11}$/', $phone)) {
+    $errors['phone'] = "正しい形式で電話番号を入力してください。";
+}
+
+if (empty($inquiry) || $inquiry === '選択してください') {
+  $errors['inquiry'] = "お問い合わせ項目は必須項目です。";
+}
+
+if (empty($message)) {
+  $errors['message'] = "お問い合わせ内容は必須項目です。";
+}
+
+if (empty($agreement)) {
+  $errors['agreement'] = "個人情報保護方針は必須項目です。";
+}
+
+// エラーメッセージの表示
+if (count($errors) > 0) {
+    echo "<div style='text-align: center; color: red;'>";
+    echo "必須項目がすべて入力されていません。<br>";
+    foreach ($errors as $error) {
+        echo $error . "<br>";
+    }
+    echo "</div>";
+} else {
+  echo "<div style='text-align: center; color: green;'>";
+  echo "お問い合わせありがとうございます。<br>";
+  echo "下記の内容でよろしいでしょうか。<br>";  
+  echo "</div>"; 
+}
+?>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -35,14 +104,14 @@
       </section>
       <section class="sec_02">
         <div class="contact">
-          <form action="task8-1.php">
+          <form action="task8-2.php" method="post">
             <table class="contact-table">
               <tr>
                 <th class="contact-item">
                   <label>お名前<span>必須</span></label>
                 </th>
                 <td class="contact-body">
-                  <input type="text" placeholder="山田太郎" name="お名前" class="form-text">
+                  <?php echo htmlspecialchars($name,ENT_QUOTES,'UTF-8');?>
                 </td>
               </tr>
               <tr>
@@ -50,7 +119,7 @@
                   <label>フリガナ<span>必須</span></label>
                 </th>
                 <td class="contact-body">
-                  <input type="text" placeholder="ヤマダタロウ" name="フリガナ" class="form-text">
+                  <?php echo htmlspecialchars($kana,ENT_QUOTES,'UTF-8');?>
                 </td>
               </tr>
               <tr>
@@ -58,7 +127,7 @@
                   <label>メールアドレス<span>必須</span></label>
                 </th>
                 <td class="contact-body">
-                  <input type="text" placeholder="info@fast-creademy.jp" name="メールアドレス" class="form-text">
+                  <?php echo htmlspecialchars($email,ENT_QUOTES,'UTF-8');?>
                 </td>
               </tr>
               <tr>
@@ -66,7 +135,7 @@
                   <label>電話番号<span>必須</span></label>
                 </th>
                 <td class="contact-body">
-                  <input type="text" placeholder="info@fast-creademy.jp" name="電話番号" class="form-text">
+                  <?php echo htmlspecialchars($phone,ENT_QUOTES,'UTF-8');?>
                 </td>
               </tr>
               <tr>
@@ -74,12 +143,7 @@
                   <label>お問い合わせ項目<span>必須</span></label>
                 </th>
                 <td class="contact-body">
-                  <select name="お問い合わせ項目" class="form-select">
-                    <option>選択してください</option>
-                    <option>ジムの入会</option>
-                    <option>休会する</option>
-                    <option>退会する</option>
-                  </select>
+                  <?php echo $inquiry;?>
                 </td>
               </tr>
               <tr>
@@ -87,7 +151,7 @@
                   <label>お問い合わせ内容<span>必須</span></label>
                 </th>
                 <td class="contact-body">
-                  <textarea name="お問い合わせ内容" placeholder="こちらにお問い合わせ内容をご記入ください" class="form-textarea"></textarea>
+                  <?php echo nl2br(htmlspecialchars($message,ENT_QUOTES,'UTF-8'));?>
                 </td>
               </tr>
               <tr>
@@ -95,16 +159,27 @@
                   <label>個人情報保護方針<span>必須</span></label>
                   </th>
                 <td class="contact-body">
-                  <input type="checkbox"  name="personal information" value="private">
-                  <a class="information" href="#"><u>個人情報保護方針</u></a>に同意します。
+                <?php echo $agreement ? '同意する' : '';?>
                 </td>
               </tr>
             </table>
-            <input class="contact-submit" type="submit" value="確認" >
+
+              <?php if (count($errors) > 0): ?>
+              <input type='button' onclick='history.back()' value='戻る' class="contact-submit">
+              <?php else: ?>
+                <button type='button' onclick='history.back()' class="contact-submit">戻る</button>
+                <button type='submit' name='submit' class="contact-submit">送信</button>
+              <?php endif; ?>              
+              <input type="hidden" name="お名前" value="<?php echo $name;?>">
+              <input type="hidden" name="フリガナ" value="<?php echo $kana;?>">
+              <input type="hidden" name="メールアドレス" value="<?php echo $email;?>">
+              <input type="hidden" name="電話番号" value="<?php echo $phone;?>">
+              <input type="hidden" name="お問い合わせ項目" value="<?php echo $inquiry;?>">
+              <input type="hidden" name="お問い合わせ内容" value="<?php echo $message;?>">
+              <input type="hidden" name="personal_information" value="<?php echo $agreement;?>">
           </form>
         </div>
       </section>
-      </input>
       <section class="sec_btn">
         <div class="wrapper">
           <div class="btns">
@@ -144,10 +219,9 @@
           </div>
         </div>               
       </section>
-    </main>
-    <footer>
-      <p>ここには会社名が入ります©copyright.</p>
-    </footer>
+      <footer>
+        <p>ここには会社名が入ります©copyright.</p>
+      </footer>
     </main> 
   </body>
 </html>
