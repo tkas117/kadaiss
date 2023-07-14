@@ -6,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/stylesheet.css">
+    <script>
+      function changeTextColor(selectElement) {
+        var selectedOption = selectElement.options[selectElement.selectedIndex];
+        selectElement.style.color = "#000000";
+        selectedOption.style.color = "#000000";
+      }
+      </script>
   </head>
   <body>
     <header>
@@ -74,7 +81,7 @@
                   <label>お問い合わせ項目<span>必須</span></label>
                 </th>
                 <td class="contact-body">
-                  <select name="お問い合わせ項目" class="form-select">
+                  <select name="お問い合わせ項目"  class="form-select" onchange="changeTextColor(this)" >
                     <option>選択してください</option>
                     <option>ジムの入会</option>
                     <option>休会する</option>
@@ -149,3 +156,4 @@
     </main> 
   </body>
 </html>
+

@@ -50,22 +50,21 @@ if (empty($message)) {
 if (empty($agreement)) {
   $errors['agreement'] = "個人情報保護方針は必須項目です。";
 }
-
-// エラーメッセージの表示
-if (count($errors) > 0) {
-    echo "<div style='text-align: center; color: red;'>";
-    echo "必須項目がすべて入力されていません。<br>";
-    foreach ($errors as $error) {
-        echo $error . "<br>";
-    }
-    echo "</div>";
-} else {
-  echo "<div style='text-align: center; color: green;'>";
-  echo "お問い合わせありがとうございます。<br>";
-  echo "下記の内容でよろしいでしょうか。<br>";  
-  echo "</div>"; 
-}
 ?>
+
+  <script>
+    function changeTextColor(selectElement) {
+      var selectedOption = selectElement.options[selectElement.selectedIndex];
+      selectElement.style.color = "#000000";
+      selectedOption.style.color = "#000000";
+    }
+  </script>
+
+  <style>
+    .error-message {
+      color: red;
+    }
+  </style>
 
 <!DOCTYPE html>
 <html>
@@ -75,7 +74,7 @@ if (count($errors) > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/stylesheet.css">
-  </head>
+   </head>
   <body>
     <header>
       <div class="header">
@@ -102,24 +101,40 @@ if (count($errors) > 0) {
           </div>
         </div>
       </section>
+      <?php if (count($errors) > 0) {
+        echo '<div class="error-message" style="text-align: center; color: red;">';
+        echo "必須項目がすべて入力されていません。<br>";
+        foreach ($errors as $error) {
+        echo $error . "<br>";
+        }   
+        echo "</div>";
+        } else {
+        echo "<div style='text-align: center; color: green;'>";
+        echo "お問い合わせありがとうございます。<br>";
+        echo "下記の内容でよろしいでしょうか。<br>";  
+        echo "</div>"; 
+        }
+      ?>
       <section class="sec_02">
         <div class="contact">
           <form action="task8-2.php" method="post">
             <table class="contact-table">
-              <tr>
-                <th class="contact-item">
-                  <label>お名前<span>必須</span></label>
-                </th>
-                <td class="contact-body">
-                  <?php echo htmlspecialchars($name,ENT_QUOTES,'UTF-8');?>
-                </td>
-              </tr>
+            <tr>
+              <th class="contact-item">
+                <label>お名前<span>必須</span></label>
+              </th>
+              <td class="contact-body">
+                <input type="text" placeholder="山田太郎" name="お名前" class="form-text" value="<?php echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8'); ?>">
+                <div class="error-message"><?php if(isset($errors['name'])) echo 'お名前は必須項目です'; ?></div>
+              </td>
+            </tr>
               <tr>
                 <th class="contact-item">
                   <label>フリガナ<span>必須</span></label>
                 </th>
                 <td class="contact-body">
-                  <?php echo htmlspecialchars($kana,ENT_QUOTES,'UTF-8');?>
+                  <input type="text" placeholder="ヤマダタロウ" name="フリガナ" class="form-text" value = "<?php echo htmlspecialchars($kana,ENT_QUOTES,'UTF-8'); ?>">
+                  <div class="error-message"><?php if(isset($errors['kana'])) echo 'フリガナは必須項目です。'; ?></div>
                 </td>
               </tr>
               <tr>
@@ -127,7 +142,8 @@ if (count($errors) > 0) {
                   <label>メールアドレス<span>必須</span></label>
                 </th>
                 <td class="contact-body">
-                  <?php echo htmlspecialchars($email,ENT_QUOTES,'UTF-8');?>
+                  <input type="text" placeholder="info@fast-creademy.jp" name="メールアドレス" class="form-text" value = "<?php echo htmlspecialchars($email,ENT_QUOTES,'UTF-8');?>">
+                  <div class="error-message"><?php if(isset($errors['email'])) echo $errors['email']; ?></div>
                 </td>
               </tr>
               <tr>
@@ -135,7 +151,8 @@ if (count($errors) > 0) {
                   <label>電話番号<span>必須</span></label>
                 </th>
                 <td class="contact-body">
-                  <?php echo htmlspecialchars($phone,ENT_QUOTES,'UTF-8');?>
+                <input type="text" placeholder="info@fast-creademy.jp" name="電話番号" class="form-text" value = "<?php echo htmlspecialchars($phone,ENT_QUOTES,'UTF-8');?>">
+                <div class="error-message"><?php if(isset($errors['phone'])) echo $errors['phone']; ?></div>
                 </td>
               </tr>
               <tr>
@@ -143,7 +160,13 @@ if (count($errors) > 0) {
                   <label>お問い合わせ項目<span>必須</span></label>
                 </th>
                 <td class="contact-body">
-                  <?php echo $inquiry;?>
+                  <select name="お問い合わせ項目" class="form-select"     onchange="changeTextColor(this)">
+                  <option <?php if ($inquiry === '選択してください') echo 'selected'; ?>>選択してください</option>
+                  <option <?php if ($inquiry === 'ジムの入会') echo 'selected'; ?>>ジムの入会</option>
+                  <option <?php if ($inquiry === '休会する') echo 'selected'; ?>>休会する</option>
+                  <option <?php if ($inquiry === '退会する') echo 'selected'; ?>>退会する</option>
+                  </select>
+                  <div class="error-message"><?php if(isset($errors['inquiry'])) echo $errors['inquiry']; ?></div>
                 </td>
               </tr>
               <tr>
@@ -151,7 +174,8 @@ if (count($errors) > 0) {
                   <label>お問い合わせ内容<span>必須</span></label>
                 </th>
                 <td class="contact-body">
-                  <?php echo nl2br(htmlspecialchars($message,ENT_QUOTES,'UTF-8'));?>
+                  <textarea name="お問い合わせ内容" placeholder="こちらにお問い合わせ内容をご記入ください" class="form-textarea"><?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?></textarea>
+                  <div class="error-message"><?php if(isset($errors['message'])) echo $errors['message']; ?></div>
                 </td>
               </tr>
               <tr>
@@ -159,15 +183,15 @@ if (count($errors) > 0) {
                   <label>個人情報保護方針<span>必須</span></label>
                   </th>
                 <td class="contact-body">
-                <?php echo $agreement ? '同意する' : '';?>
+                <input type="checkbox" name="personal_information" value="private"<?php if ($agreement) echo ' checked'; ?>> <a class="information" href="#"><u>個人情報保護方針</u></a>に同意します。
+                <div class="error-message"><?php if(isset($errors['agreement'])) echo $errors['agreement']; ?></div>
                 </td>
               </tr>
             </table>
-              <?php if (count($errors) > 0): ?>
+            <?php if (count($errors) > 0): ?>
               <input type='button' onclick='history.back()' value='戻る' class="contact-submit">
-              <?php else: ?>
-                <button type='button' onclick='history.back()' class="contact-submit">戻る</button>
-                <button type='submit' name='submit' class="contact-submit">送信</button>
+              <?php else: ?>               
+              <button type='submit' name='submit' class="contact-submit">送信</button>
               <?php endif; ?>              
               <input type="hidden" name="お名前" value="<?php echo $name;?>">
               <input type="hidden" name="フリガナ" value="<?php echo $kana;?>">
@@ -176,7 +200,7 @@ if (count($errors) > 0) {
               <input type="hidden" name="お問い合わせ項目" value="<?php echo $inquiry;?>">
               <input type="hidden" name="お問い合わせ内容" value="<?php echo $message;?>">
               <input type="hidden" name="personal_information" value="<?php echo $agreement;?>">
-          </form>
+          </form>       
         </div>
       </section>
       <section class="sec_btn">
