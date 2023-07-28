@@ -1,67 +1,68 @@
 <?php
-  session_start();
+session_start();
 
-  //各項目を内容を取得
-  $name = $_POST['お名前'];
-  $kana = $_POST['フリガナ'];
-  $email = $_POST['メールアドレス'];
-  $phone = $_POST['電話番号'];
-  $inquiry = $_POST['お問い合わせ項目'];
-  $message = $_POST['お問い合わせ内容'];
-  $agreement = isset($_POST['personal_information']) ? $_POST['personal_information'] : '';
+//各項目を内容を取得
+$name = $_POST['お名前'];
+$kana = $_POST['フリガナ'];
+$email = $_POST['メールアドレス'];
+$phone = $_POST['電話番号'];
+$inquiry = $_POST['お問い合わせ項目'];
+$message = $_POST['お問い合わせ内容'];
+$agreement = isset($_POST['personal_information']) ? $_POST['personal_information'] : '';
 
 
-  // 赤字でエラー表示するために、まず、連想配列を作成。
-  $errors = array();
+// 赤字でエラー表示するために、まず、連想配列を作成。
+$errors = array();
 
-  // 必須項目のチェック
-  if (empty($name)) {
-    $errors['name'] = "お名前は必須項目です。";
-  }
+// 必須項目のチェック
+if (empty($name)) {
+  $errors['name'] = "お名前は必須項目です。";
+}
 
-  if (empty($kana)) {
-    $errors['kana'] = "フリガナは必須項目です。";
-  }
+if (empty($kana)) {
+  $errors['kana'] = "フリガナは必須項目です。";
+}
 
-  if (empty($email)) {
+if (empty($email)) {
     $errors['email'] = "メールアドレスは必須項目です。";
   } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     $errors['email'] = "正しい形式でメールアドレスを入力してください。";
-  }
+}
 
-  if (empty($phone)) {
+if (empty($phone)) {
     $errors['phone'] = "電話番号は必須項目です。";
   } elseif (!preg_match('/^\d{10,11}$/', $phone)) {
     $errors['phone'] = "正しい形式で電話番号を入力してください。";
-  }
+}
 
-  if (empty($inquiry) || $inquiry === '選択してください') {
-    $errors['inquiry'] = "お問い合わせ項目は必須項目です。";
-  }
+if (empty($inquiry) || $inquiry === '選択してください') {
+  $errors['inquiry'] = "お問い合わせ項目は必須項目です。";
+}
 
-  if (empty($message)) {
-    $errors['message'] = "お問い合わせ内容は必須項目です。";
-  }
+if (empty($message)) {
+  $errors['message'] = "お問い合わせ内容は必須項目です。";
+}
 
-  if (empty($agreement)) {
-    $errors['agreement'] = "個人情報保護方針は必須項目です。";
-  }
+if (empty($agreement)) {
+  $errors['agreement'] = "個人情報保護方針は必須項目です。";
+}
 
-  if (count($errors) === 0 && isset($_POST['submit'])) {
-    // エラーがなくかつ送信ボタンが押された場合に処理を実行
-    // セッションにデータを保存
-    $_SESSION['name'] = $name;
-    $_SESSION['kana'] = $kana;
-    $_SESSION['email'] = $email;
-    $_SESSION['phone'] = $phone;
-    $_SESSION['inquiry'] = $inquiry;
-    $_SESSION['message'] = $message;
-    $_SESSION['agreement'] = $agreement;
+if (count($errors) === 0 && isset($_POST['submit'])) {
+  // エラーがなくかつ送信ボタンが押された場合に処理を実行
+  // セッションにデータを保存
+  $_SESSION['name'] = $name;
+  $_SESSION['kana'] = $kana;
+  $_SESSION['email'] = $email;
+  $_SESSION['phone'] = $phone;
+  $_SESSION['inquiry'] = $inquiry;
+  $_SESSION['message'] = $message;
+  $_SESSION['agreement'] = $agreement;
+  $_SESSION['created_at'] = date('Y-m-d H:i:s');
 
-    // task8-2.phpへリダイレクト
-    header("Location: task8-2.php");
-    exit();
-  }
+  // task9-1.phpへリダイレクト
+  header("Location: task9-1.php");
+  exit();
+}
 ?>
 
   <script>
