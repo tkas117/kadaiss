@@ -1,9 +1,9 @@
 <?php
 
 require_once('app/Database.php');
-exit;
+
 require_once('app/html_func.php');
-exit;
+// exit;
 require_once('app/check.php');
 
 function get_error()

@@ -1,6 +1,7 @@
 <?php
 require_once('common.php');
-
+// var_dump($_POST);
+// exit;
 if (isset($_POST["status"])) {
   if (isset($_POST["id"])) {
     $id = $_POST["id"];
@@ -24,6 +25,15 @@ if (isset($_POST["status"])) {
     }
     if ($db->idexist($id) == true) {
       $error = "既に使用されているIDです";
+      header("Location: syain_create.php?error={$error}");
+      exit();
     }
+    if ($db->createsyain($id, $name, $age, $work) == false) {
+      $error = "DBエラー";
+      header("Location: syain_create.php?error={$error}");
+      exit();
+    }
+    header("Location: index.php");
+    exit();
   }
 }
