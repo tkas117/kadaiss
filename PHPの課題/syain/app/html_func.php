@@ -73,6 +73,35 @@ function show_form($id, $name, $age, $work, $old_id, $status, $button)
 FORM;
 }
 
+
+
+function show_syain($member)
+{
+  echo<<<TABOL1
+  <table>
+    <tr>
+      <th>社員番号</th>
+      <th>名前</th>
+      <th>年齢</th>
+      <th>勤務形態</th>
+    </tr>
+    <tr>
+      <td>{$member['id']}</td>
+      <td>{$member['name']}</td>
+      <td>{$member['age']}</td>
+      <td>{$member['work']}</td>
+    </tr>
+  </table>
+TABOL1;
+}
+
+
+
+function show_update(){
+
+}
+
+
 function show_create()
 {
   $error = get_error();
