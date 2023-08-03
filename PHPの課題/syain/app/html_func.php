@@ -92,6 +92,9 @@ function show_syain($member)
       <td>{$member['work']}</td>
     </tr>
   </table>
+  <div>
+    <a href="syain_update.php?id={$member['id']}" class="update-link">社員情報の更新</a>
+  </div>
 TABOL1;
 }
 
