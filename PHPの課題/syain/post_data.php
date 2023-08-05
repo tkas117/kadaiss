@@ -47,6 +47,19 @@ if (isset($_POST["status"])) {
     header("Location: index.php");
     exit();
   }
+
+  function deletesyain($id) {
+    try {
+        $this->connect();
+        $stmt = $this->pdo->prepare("DELETE FROM syain WHERE id = ?;");
+        $stmt->bindParam(1, $id, PDO::PARAM_INT);
+        $result = $stmt->execute();
+        return $result;
+    } catch (PDOException $e) {
+        echo $e->getMessage() . '<br>';
+        return false;
+    }
+}
 }
 ?>
 

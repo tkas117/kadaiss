@@ -73,8 +73,6 @@ function show_form($id, $name, $age, $work, $old_id, $status, $button)
 FORM;
 }
 
-
-
 function show_syain($member)
 {
   echo<<<TABOL1
@@ -92,16 +90,17 @@ function show_syain($member)
       <td>{$member['work']}</td>
     </tr>
   </table>
-  <div>
-    <a href="syain_update.php?id={$member['id']}" class="update-link">社員情報の更新</a>
+  <div class="update-link">
+    <a href="syain_update.php?id={$member['id']}" >社員情報の更新</a>
+    <a href="syain_delete.php?id={$member['id']}" >社員情報の削除</a>
   </div>
 TABOL1;
 }
 
 
-
 function show_update(){
-
+  $error = get_error();
+  show_form("","","","","","create","登録");
 }
 
 
@@ -110,4 +109,22 @@ function show_create()
   $error = get_error();
   show_form("","","","","","create","登録");
 }
+
+function show_delete($id)
+{
+    echo <<<DELETE
+    <form action="syain_delete.php" method="GET">
+        <input type="hidden" name="id" value="$id">
+        <input type="submit" value="社員情報の削除">
+    </form>
+DELETE;
+}
+
 ?>
+
+<style>
+.update-link {
+  display: flex;
+  flex-direction: column;
+}
+</style>

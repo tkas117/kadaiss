@@ -1,10 +1,10 @@
 <?php
-define('DSN', 'mysql:host=localhost;dbname=company;charset=utf8mb4');
-define('USER','root');
-define('PASS','root');
+  define('DSN', 'mysql:host=localhost;dbname=company;charset=utf8mb4');
+  define('USER','root');
+  define('PASS','root');
 
-class Database
-{
+  class Database
+  {
   private $pdo;
   
   private function connect()
@@ -82,21 +82,36 @@ class Database
   }
 
   function updatesyain($id, $new_id, $new_name, $new_age, $new_work)
-{
-  try {
-    $this->connect();
-    $stmt = $this->pdo->prepare("UPDATE syain SET id=?, name=?, age=?, work=? WHERE id=?;");
-    $stmt->bindParam(1, $new_id, PDO::PARAM_INT);
-    $stmt->bindParam(2, $new_name, PDO::PARAM_STR);
-    $stmt->bindParam(3, $new_age, PDO::PARAM_INT);
-    $stmt->bindParam(4, $new_work, PDO::PARAM_STR);
-    $stmt->bindParam(5, $id, PDO::PARAM_INT);
-    $result = $stmt->execute();
-    return $result;
-  } catch (PDOException $e) {
-    echo $e->getMessage() . '<br>';
-    exit;
+  {
+    try {
+      $this->connect();
+      $stmt = $this->pdo->prepare("UPDATE syain SET id=?, name=?, age=?, work=? WHERE id=?;");
+      $stmt->bindParam(1, $new_id, PDO::PARAM_INT);
+      $stmt->bindParam(2, $new_name, PDO::PARAM_STR);
+      $stmt->bindParam(3, $new_age, PDO::PARAM_INT);
+      $stmt->bindParam(4, $new_work, PDO::PARAM_STR);
+      $stmt->bindParam(5, $id, PDO::PARAM_INT);
+      $result = $stmt->execute();
+      return $result;
+    } catch (PDOException $e) {
+      echo $e->getMessage() . '<br>';
+      exit;
+    }
+    return false;
   }
-  return false;
-}
+
+  function deletesyain($id) 
+  {
+    try {
+      $this->connect();
+      $stmt = $this->pdo->prepare("DELETE FROM syain WHERE id = ?;");
+      $stmt->bindParam(1, $id, PDO::PARAM_INT);
+      $result = $stmt->execute();
+      return $result;
+    } catch (PDOException $e) {
+      echo $e->getMessage() . '<br>';
+      exit;
+    }
+    return false;
+  }
 }
