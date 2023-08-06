@@ -1,4 +1,4 @@
-<!-- <?php
+<?php
 require_once('common.php');
 
 if (isset($_GET['id'])) {
@@ -29,23 +29,7 @@ if (isset($_GET['id'])) {
 } else {
     echo "エラー: 削除する社員のIDが指定されていません。";
 }
-?> -->
-
-
-<?php
-require_once('common.php');
-
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
-
-    
-    if ($db->deletesyain($id)) {
-        header("Location: index.php"); 
-        exit();
-    } else {
-        echo "削除に失敗しました。";
-    }
-} else {
-    echo "エラー: 削除する社員のIDが指定されていません。";
-}
 ?>
+
+
+

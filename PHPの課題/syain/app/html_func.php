@@ -53,7 +53,7 @@ TABLE3;
 
 function show_form($id, $name, $age, $work, $old_id, $status, $button)
 {
-  $error = "";
+  // $error = "";
   $error = get_error();
   echo <<<FORM
   <form action="post_data.php" method="post">
@@ -90,7 +90,7 @@ function show_syain($member)
       <td>{$member['work']}</td>
     </tr>
   </table>
-  <div class="update-link">
+  <div class="link">
     <a href="syain_update.php?id={$member['id']}" >社員情報の更新</a>
     <a href="syain_delete.php?id={$member['id']}" >社員情報の削除</a>
   </div>
@@ -104,26 +104,33 @@ function show_update(){
 }
 
 
-function show_create()
-{
-  $error = get_error();
-  show_form("","","","","","create","登録");
+// function show_create($name = '', $age = '', $work = '', $error = '')
+// {
+//     $error = get_error();
+//     show_form('', $name, $age, $work, '', 'create', '登録', $error); 
+// }
+
+function show_create($id = '', $name = '', $age = '', $work = '', $error = '') {
+    $error = get_error();
+    show_form($id, $name, $age, $work, '', 'create', '登録', $error);
 }
 
-function show_delete($id)
-{
-    echo <<<DELETE
-    <form action="syain_delete.php" method="GET">
-        <input type="hidden" name="id" value="$id">
-        <input type="submit" value="社員情報の削除">
-    </form>
-DELETE;
-}
+
+
+// function show_delete($id)
+// {
+//     echo <<<DELETE
+//     <form action="syain_delete.php" method="GET">
+//         <input type="hidden" name="id" value="$id">
+//         <input type="submit" value="社員情報の削除">
+//     </form>
+// DELETE;
+// }
 
 ?>
 
 <style>
-.update-link {
+.link {
   display: flex;
   flex-direction: column;
 }

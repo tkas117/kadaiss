@@ -3,27 +3,28 @@ require_once('common.php');
 
 if (isset($_POST["status"])) {
   if ($_POST["status"] == "create") {
-    $id = $_POST["id"];
-    $name = $_POST["name"];
-    $age = $_POST["age"];
-    $work = $_POST["work"];
-    
-    if (check_input($id, $name, $age, $work, $error) == false) {
-      header("Location: syain_create.php?error={$error}");
+      $id = $_POST["id"];
+      $name = $_POST["name"];
+      $age = $_POST["age"];
+      $work = $_POST["work"];
+
+      // エラーチェック
+      if (check_input($id, $name, $age, $work, $error) == false) {
+          header("Location: syain_create.php?error={$error}&id={$id}&name={$name}&age={$age}&work={$work}");
+          exit();
+      }
+      if ($db->idexist($id) == true) {
+          $error = "既に使用されているIDです";
+          header("Location: syain_create.php?error={$error}&id={$id}&name={$name}&age={$age}&work={$work}");
+          exit();
+      }
+      if ($db->createsyain($id, $name, $age, $work) == false) {
+          $error = "DBエラー";
+          header("Location: syain_create.php?error={$error}&id={$id}&name={$name}&age={$age}&work={$work}");
+          exit();
+      }
+      header("Location: index.php");
       exit();
-    }
-    if ($db->idexist($id) == true) {
-      $error = "既に使用されているIDです";
-      header("Location: syain_create.php?error={$error}");
-      exit();
-    }
-    if ($db->createsyain($id, $name, $age, $work) == false) {
-      $error = "DBエラー";
-      header("Location: syain_create.php?error={$error}");
-      exit();
-    }
-    header("Location: index.php");
-    exit();
   } elseif ($_POST["status"] == "update") {
     $id = $_POST["id"];
     $name = $_POST["name"];
