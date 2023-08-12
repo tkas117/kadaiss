@@ -2,11 +2,12 @@
 require_once('common.php');
 
 if (isset($_POST["status"])) {
+
+  $id = $_POST["id"];
+  $name = $_POST["name"];
+  $age = $_POST["age"];
+  $work = $_POST["work"];
   if ($_POST["status"] == "create") {
-      $id = $_POST["id"];
-      $name = $_POST["name"];
-      $age = $_POST["age"];
-      $work = $_POST["work"];
 
       // エラーチェック
       if (check_input($id, $name, $age, $work, $error) == false) {
@@ -26,41 +27,43 @@ if (isset($_POST["status"])) {
       header("Location: index.php");
       exit();
   } elseif ($_POST["status"] == "update") {
-    $id = $_POST["id"];
+    $id = $_POST["old_id"]; // 旧社員番号を使用
+    $new_id = $_POST["id"]; // 新しい社員番号を取得
     $name = $_POST["name"];
     $age = $_POST["age"];
     $work = $_POST["work"];
     
-    if (check_input($id, $name, $age, $work, $error) == false) {
-      header("Location: syain_update.php?error={$error}&id={$id}");
-      exit();
+    // エラーチェック
+    if (check_input($new_id, $name, $age, $work, $error) == false) {
+        header("Location: syain_update.php?id={$id}&error={$error}");
+        exit();
     }
-    if ($db->idexist($id) == false) {
-      $error = "IDが存在しません";
-      header("Location: syain_update.php?error={$error}&id={$id}");
-      exit();
+
+    // 既に使用されているIDかどうかチェック
+    if ($new_id != $id && $db->idexist($new_id)) {
+        $error = "既に使用されているIDです";
+        header("Location: syain_update.php?id={$id}&error={$error}&name={$name}&age={$age}&work={$work}");
+        exit();
     }
-    if ($db->updatesyain($id, $id, $name, $age, $work) == false) {
+
+    // データベース更新処理
+    if ($db->updatesyain($id, $new_id, $name, $age, $work)) {
+        header("Location: index.php");
+        exit();
+    } else {
+        $error = "DBエラー";
+        header("Location: syain_update.php?id={$id}&error={$error}");
+        exit();
+    }
+}elseif ($_POST["status"] == "delete") {
+    if ($db->deletesyain($id) == false) {
       $error = "DBエラー";
-      header("Location: syain_update.php?error={$error}&id={$id}");
+      header("Location: syain_delete.php?error={$error}&id={$id}");
       exit();
     }
     header("Location: index.php");
-    exit();
+    exit();    
   }
-
-  function deletesyain($id) {
-    try {
-        $this->connect();
-        $stmt = $this->pdo->prepare("DELETE FROM syain WHERE id = ?;");
-        $stmt->bindParam(1, $id, PDO::PARAM_INT);
-        $result = $stmt->execute();
-        return $result;
-    } catch (PDOException $e) {
-        echo $e->getMessage() . '<br>';
-        return false;
-    }
-}
 }
 ?>
 

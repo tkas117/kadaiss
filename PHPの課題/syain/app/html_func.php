@@ -98,9 +98,9 @@ TABOL1;
 }
 
 
-function show_update(){
+function show_update($member){
   $error = get_error();
-  show_form("","","","","","create","登録");
+  show_form($member["id"],$member["name"],$member["age"],$member["work"],$member["id"],"update","更新");
 }
 
 
