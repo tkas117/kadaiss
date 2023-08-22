@@ -54,4 +54,14 @@ class PostController extends Controller
 
         return redirect()->route('index.posts');
     }
+
+    public function search(Request $request){
+        $searchkey = $request->input('searchkey');
+
+        $searchResults = Post::where('title', 'LIKE', '%' . $searchkey . '%')->get();
+
+        return view('posts.search', compact('searchResults'));
+    }
+
+
 }

@@ -22,5 +22,4 @@
         @enderror
         <div class="btn"><button>更新</button></div>
     </form>
-
 </x-layout>
