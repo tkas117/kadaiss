@@ -63,5 +63,17 @@ class PostController extends Controller
         return view('posts.search', compact('searchResults'));
     }
 
+// ①$searchkey = $request->input('searchkey');
+// ユーザーが入力した検索キーワードを取得して、$searchkey 変数に代入します。
+
+// ②$searchResults = Post::where('title', 'LIKE', '%' . $searchkey . '%')->get();
+// ・Post モデル（投稿モデル）の中から、タイトルが検索キーワードに部分一致する投稿を検索します。
+// ・LIKE クエリ演算子を使用して、タイトルが検索キーワードを部分一致で含むかどうかを検索条件として設定します。
+// ・get() メソッドを使用して、該当する全ての投稿を取得します。
+
+//③ return view('posts.search', compact('searchResults'));
+// ・search.blade.php ビューに検索結果を渡して表示するためのビューを指定します。
+// ・compact('searchResults') は、searchResults 変数をビューに渡すための簡便な方法です。
 
 }
+
